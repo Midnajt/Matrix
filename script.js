@@ -40,6 +40,14 @@ class Effect {
             this.symbols[i] = new Symbol(i,0,this.fontSize,this.canvasHeight);
         }
     }
+
+    resize(width, height){
+        this.canvasWidth = width;
+        this.canvasHeight = height;
+        this.columns = this.canvasWidth/this.fontSize;
+        this.symbols = [];
+        this.#initialize();
+    }
 }
 
 const effect = new Effect(canvas.width,canvas.height);
@@ -66,3 +74,9 @@ function animate(timeStamp){
 }
 
 animate(0);
+
+window.addEventListener('resize', function(){
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    effect.resize(canvas.width,canvas.height);
+})
