@@ -17,6 +17,11 @@ class Symbol {
         this.text = this.characters.charAt(Math.floor(Math.random()*this.characters.length));
         context.fillStyle= '#0aff0a';
         context.fillText(this.text, this.x * this.fontSize, this.y * this.fontSize);
+        if(this.y * this.fontSize > this.canvasHeight){
+            this.y = 0;
+        } else {
+            this.y += 1;
+        }
     }
 }
 
@@ -28,7 +33,7 @@ class Effect {
         this.columns = this.canvasWidth/this.fontSize;
         this.symbols = [];
         this.#initialize();
-        // console.log(this.columns)
+        // console.log(this.symbols)
     }
 
     #initialize(){
@@ -36,15 +41,20 @@ class Effect {
         console.log(this.columns.length)
         // console.log('1')
         for(let i = 0; i < this.columns; i++){
-            console.log('ok')
-            this.symbols[i] = new Symbol();
+            this.symbols[i] = new Symbol(i,0,this.fontSize,this.canvasHeight);
         }
         // console.log('2')
     }
 }
 
-new Effect(canvas.width,canvas.height);
+const effect = new Effect(canvas.width,canvas.height);
 
 function animate(){
-
+    ctx.fillStyle = 'rgba(0,0,0,0.05)';
+    ctx.fillRect(0,0, canvas.width, canvas.height)
+    ctx.font = effect.fontSize + 'px monospace';
+    effect.symbols.forEach(symbol => symbol.draw(ctx));
+    requestAnimationFrame(animate);
 }
+
+animate();
